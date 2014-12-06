@@ -8,6 +8,7 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class kije\User
@@ -76,4 +77,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->getKey(); // todo maybe change
     }
 
+    public function setPassword($password) {
+        $this->passwort =  Hash::make($password);
+    }
 }

@@ -13,8 +13,10 @@ class UserTableSeeder extends Seeder {
 
         if ($users->isEmpty()) {
             echo 'Create user "root" with password "password"'.PHP_EOL;
-            $user = User::create(array('benutzername' => 'root', 'ID' => 1));
-            $user->passwort = Hash::make('password');
+            $user = new User();
+            $user->benutzername = 'root';
+            $user->ID = 1;
+            $user->setPassword('password');
             $user->save();
             echo 'Done'.PHP_EOL;
         }
