@@ -20,7 +20,7 @@ Route::any('/', function () {
 });
 
 // frontend
-Route::resource('user', 'UserController', array('only' => array('index', 'show')));
+//Route::resource('user', 'UserController', array('only' => array('index', 'show')));
 Route::resource('event', 'EventController', array('only' => array('index', 'show')));
 
 // backend
