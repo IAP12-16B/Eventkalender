@@ -16,9 +16,9 @@ class Users extends Migration {
         Schema::create('Benutzer', function(Blueprint $table)
         {
             $table->engine = 'InnoDB';
-            $table->increments('id')->unsigned();
-            $table->string('username', 50)->unique();
-            $table->string('password', 120);
+            $table->increments('ID')->unsigned();
+            $table->string('benutzername', 50)->unique();
+            $table->string('passwort', 120);
 
             $table->rememberToken();
 
