@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost/Eventkalender/public/',
+	'url' => 'http://localhost/Eventkalender/public',
 
 	/*
 	|--------------------------------------------------------------------------
