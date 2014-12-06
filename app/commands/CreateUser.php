@@ -69,9 +69,13 @@ class CreateUser extends Command
                 $user->ID = $id;
             }
             $user->setPassword($password);
-            $user->save();
+            if ($user->save()) {
+                $this->info('User created!');
+            } else {
+                $this->error('Something went wrong!');
+            }
 
-            $this->info('User created!');
+
         } else {
             $this->argument();
         }
