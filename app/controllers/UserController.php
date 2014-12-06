@@ -14,13 +14,13 @@ class UserController extends \BaseController {
 
 
 	/**
-	 * Show the form for creating a new resource.
+	 * kije\Show the form for creating a new resource.
 	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		//
+
 	}
 
 
@@ -48,7 +48,7 @@ class UserController extends \BaseController {
 
 
 	/**
-	 * Show the form for editing the specified resource.
+	 * kije\Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
 	 * @return Response

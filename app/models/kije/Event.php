@@ -1,15 +1,18 @@
 <?php
 
+namespace kije;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Event
+ * Class kije\Event
  * @property int $ID
  * @property string $name
  * @property string $besetzung
  * @property string $beschreibung
- * @property string $dauer
+ * @property Carbon $dauer
  * @property string $bild
  * @property string $bildbeschreibung
  * @property int $fk_Genre_ID
@@ -59,26 +62,31 @@ class Event extends Eloquent
 
     public function genre()
     {
-        return $this->belongsTo('Genre', 'fk_Genre_ID');
+        return $this->belongsTo('kije\Genre', 'fk_Genre_ID');
     }
 
     public function links()
     {
-        return $this->hasMany('Link', 'fk_Veranstaltung_ID');
+        return $this->hasMany('kije\Link', 'fk_Veranstaltung_ID');
     }
 
     public function shows()
     {
-        return $this->hasMany('Show', 'fk_Veranstaltung_ID');
+        return $this->hasMany('kije\Show', 'fk_Veranstaltung_ID');
     }
 
     public function pricegroups()
     {
         return $this->belongsToMany(
-            'Pricegroup',
+            'kije\Pricegroup',
             'Veranstaltung_hat_Preisgruppe',
             'fk_Veranstaltung_ID',
             'fk_Preisgruppe_ID'
         );
+    }
+
+    public function getDates()
+    {
+        return array('dauer');
     }
 }

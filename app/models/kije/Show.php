@@ -1,23 +1,27 @@
 <?php
 
+
+namespace kije;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Link
+ * Class kije\Show
  * @property int $ID
- * @property string $name
- * @property string $link
+ * @property Carbon $datum
+ * @property Carbon $zeit
  * @property int $fk_Veranstaltung_ID
  * @property Event $event
  */
-class Link extends Eloquent {
-
+class Show extends Eloquent
+{
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Link';
+    protected $table = 'Vorstellung';
 
     /**
      * Indicates if the model should be timestamped.
@@ -39,12 +43,18 @@ class Link extends Eloquent {
      * @var array
      */
     protected $fillable = array(
-        'name',
-        'link',
+        'datum',
+        'zeit',
         'fk_Veranstaltung_ID'
     );
 
-    public function event() {
-        return $this->belongsTo('Event', 'fk_Veranstaltung_ID');
+    public function getDates()
+    {
+        return array('datum', 'zeit');
     }
-} 
+
+    public function event()
+    {
+        return $this->belongsTo('kije\Event', 'fk_Veranstaltung_ID');
+    }
+}

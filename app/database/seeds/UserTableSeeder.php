@@ -2,10 +2,8 @@
 
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
+use kije\User;
 
 class UserTableSeeder extends Seeder {
 

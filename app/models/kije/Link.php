@@ -1,23 +1,26 @@
 <?php
 
-use Illuminate\Database\Eloquent\Collection;
+namespace kije;
+
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Genre
+ * Class kije\Link
  * @property int $ID
  * @property string $name
- * @property Collection $events
+ * @property string $link
+ * @property int $fk_Veranstaltung_ID
+ * @property Event $event
  */
-class Genre extends Eloquent
+class Link extends Eloquent
 {
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Genre';
+    protected $table = 'Link';
 
     /**
      * Indicates if the model should be timestamped.
@@ -39,12 +42,13 @@ class Genre extends Eloquent
      * @var array
      */
     protected $fillable = array(
-        'name'
+        'name',
+        'link',
+        'fk_Veranstaltung_ID'
     );
 
-    public function events()
+    public function event()
     {
-        return $this->hasMany('Event', 'fk_Genre_ID');
+        return $this->belongsTo('kije\Event', 'fk_Veranstaltung_ID');
     }
-
 }

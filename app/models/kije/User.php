@@ -1,5 +1,6 @@
-
 <?php
+
+namespace kije;
 
 
 use Illuminate\Auth\Reminders\RemindableInterface;
@@ -9,7 +10,7 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class User
+ * Class kije\User
  * @property int $ID
  * @property string $benutzername
  * @property string $passwort

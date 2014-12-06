@@ -1,22 +1,24 @@
 <?php
 
+namespace kije;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Pricegroup
+ * Class kije\Genre
  * @property int $ID
  * @property string $name
- * @property string $preis
- * @propertx Collection $events
+ * @property Collection $events
  */
-class Pricegroup extends Eloquent {
+class Genre extends Eloquent
+{
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Preisgruppe';
+    protected $table = 'Genre';
 
     /**
      * Indicates if the model should be timestamped.
@@ -38,18 +40,12 @@ class Pricegroup extends Eloquent {
      * @var array
      */
     protected $fillable = array(
-        'name',
-        'preis'
+        'name'
     );
 
     public function events()
     {
-        return $this->belongsToMany(
-            'Event',
-            'Veranstaltung_hat_Preisgruppe',
-            'fk_Preisgruppe_ID',
-            'fk_Veranstaltung_ID'
-        );
+        return $this->hasMany('kije\Event', 'fk_Genre_ID');
     }
 
 }

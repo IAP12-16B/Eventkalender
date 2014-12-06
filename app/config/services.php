@@ -24,7 +24,7 @@ return array(
 	),
 
 	'stripe' => array(
-		'model'  => 'User',
+		'model'  => 'kije\User',
 		'secret' => '',
 	),
 

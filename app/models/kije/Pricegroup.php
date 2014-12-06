@@ -1,25 +1,25 @@
 <?php
 
 
-use Carbon\Carbon;
+namespace kije;
+
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
- * Class Show
+ * Class kije\Pricegroup
  * @property int $ID
- * @property Carbon $datum
- * @property Carbon $zeit
- * @property int $fk_Veranstaltung_ID
- * @property Event $event
+ * @property string $name
+ * @property string $preis
+ * @propertx Collection $events
  */
-class Show extends Eloquent
+class Pricegroup extends Eloquent
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Vorstellung';
+    protected $table = 'Preisgruppe';
 
     /**
      * Indicates if the model should be timestamped.
@@ -41,17 +41,18 @@ class Show extends Eloquent
      * @var array
      */
     protected $fillable = array(
-        'datum',
-        'zeit',
-        'fk_Veranstaltung_ID'
+        'name',
+        'preis'
     );
 
-    public function getDates()
+    public function events()
     {
-        return array('datum', 'zeit');
+        return $this->belongsToMany(
+            'kije\Event',
+            'Veranstaltung_hat_Preisgruppe',
+            'fk_Preisgruppe_ID',
+            'fk_Veranstaltung_ID'
+        );
     }
 
-    public function event() {
-        return $this->belongsTo('Event', 'fk_Veranstaltung_ID');
-    }
 }
