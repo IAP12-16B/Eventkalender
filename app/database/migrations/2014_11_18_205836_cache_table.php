@@ -1,9 +1,10 @@
 <?php
 
+
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCacheTable extends Migration {
+class CacheTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -14,6 +15,7 @@ class CreateCacheTable extends Migration {
 	{
 		Schema::create('cache', function(Blueprint $table)
 		{
+            $table->engine = 'InnoDB';
 			$table->string('key')->unique();
 			$table->text('value');
 			$table->integer('expiration');

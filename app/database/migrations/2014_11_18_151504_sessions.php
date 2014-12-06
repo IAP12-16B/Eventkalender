@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Session extends Migration {
+class Sessions extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,8 +13,9 @@ class Session extends Migration {
 	 */
 	public function up()
 	{
-        Schema::create('sessions', function($table)
+        Schema::create('sessions', function(Blueprint $table)
         {
+            $table->engine = 'InnoDB';
             $table->string('id')->unique();
             $table->text('payload');
             $table->integer('last_activity');
