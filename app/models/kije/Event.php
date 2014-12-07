@@ -21,14 +21,14 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @property Collection $links
  * @property Collection $shows
  * @property Collection $pricegroups
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereID($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereName($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBesetzung($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBeschreibung($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereDauer($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBild($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBildbeschreibung($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Event whereFkGenreID($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereID($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBesetzung($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBeschreibung($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereDauer($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBild($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBildbeschreibung($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Event whereFkGenreID($value)
  */
 class Event extends Eloquent
 {

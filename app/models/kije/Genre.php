@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @property int $ID
  * @property string $name
  * @property Collection $events
- * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereID($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereName($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereID($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereName($value)
  */
 class Genre extends Eloquent
 {

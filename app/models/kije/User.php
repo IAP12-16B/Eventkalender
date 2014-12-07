@@ -15,10 +15,10 @@ use Illuminate\Auth\UserTrait;
  * @property string $passwort
  * @property string $remember_token
  * @property integer $id
- * @method static \Illuminate\Database\Query\Builder|\kije\User whereId($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\User whereBenutzername($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\User wherePasswort($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\User whereRememberToken($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereBenutzername($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\User wherePasswort($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereRememberToken($value)
  */
 class User extends \Eloquent implements UserInterface, RemindableInterface
 {

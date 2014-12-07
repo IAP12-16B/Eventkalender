@@ -16,9 +16,11 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  *             'kije\Event[] $events
  * @property-read \Illuminate\Database\Eloquent\Collection|\
  *             'kije\Event[] $events
- * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereID($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereName($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup wherePreis($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereID($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup wherePreis($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
  */
 class Pricegroup extends Eloquent
 {

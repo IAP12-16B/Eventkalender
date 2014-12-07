@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @property string $link
  * @property int $fk_Veranstaltung_ID
  * @property Event $event
- * @method static \Illuminate\Database\Query\Builder|\kije\Link whereID($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Link whereName($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Link whereLink($value) 
- * @method static \Illuminate\Database\Query\Builder|\kije\Link whereFkVeranstaltungID($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Link whereID($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Link whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Link whereLink($value)
+ * @method static \Illuminate\Database\Query\Builder|\kije\Link whereFkVeranstaltungID($value)
  */
 class Link extends Eloquent
 {
