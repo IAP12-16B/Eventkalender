@@ -12,5 +12,4 @@
             {{ Form::button('Login', array('type' => 'submit')) }}
         {{ Form::close() }}
     </div>
-
 @endsection
