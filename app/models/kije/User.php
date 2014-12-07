@@ -7,17 +7,20 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserTrait;
-use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * Class kije\User
- * @property int $ID
+ *
  * @property string $benutzername
  * @property string $passwort
  * @property string $remember_token
+ * @property integer $id
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereId($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereBenutzername($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\User wherePasswort($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\User whereRememberToken($value) 
  */
-class User extends Eloquent implements UserInterface, RemindableInterface
+class User extends \Eloquent implements UserInterface, RemindableInterface
 {
 
     use UserTrait, RemindableTrait;
@@ -34,7 +37,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      *
      * @var array
      */
-    protected $hidden = array('password', 'remember_token');
+    protected $hidden = array('passwort', 'remember_token');
 
     /**
      * Indicates if the model should be timestamped.
@@ -43,12 +46,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      */
     public $timestamps = false;
 
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
 
     /**
      * The attributes that aren't mass assignable.
@@ -71,13 +68,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      * Get the unique identifier for the user.
      *
      * @return mixed
-     */
+
     public function getAuthIdentifier()
     {
-        return $this->getKey(); // todo maybe change
-    }
+        return 'benutzername'; // todo maybe change
+    } */
 
     public function setPassword($password) {
-        $this->passwort =  Hash::make($password);
+        $this->passwort =  \Hash::make($password);
     }
 }

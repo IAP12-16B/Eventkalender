@@ -7,10 +7,18 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
  * Class kije\Pricegroup
+ *
  * @property int $ID
  * @property string $name
  * @property string $preis
  * @propertx Collection $events
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereID($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereName($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup wherePreis($value) 
  */
 class Pricegroup extends Eloquent
 {

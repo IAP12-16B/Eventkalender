@@ -66,7 +66,7 @@ class CreateUser extends Command
             $user = new User();
             $user->benutzername = $username;
             if (!empty($id)) {
-                $user->ID = $id;
+                $user->id = $id;
             }
             $user->setPassword($password);
             if ($user->save()) {

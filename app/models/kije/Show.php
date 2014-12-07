@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
  * Class kije\Show
+ *
  * @property int $ID
  * @property Carbon $datum
  * @property Carbon $zeit
  * @property int $fk_Veranstaltung_ID
  * @property Event $event
+ * @method static \Illuminate\Database\Query\Builder|\kije\Show whereID($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Show whereDatum($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Show whereZeit($value) 
+ * @method static \Illuminate\Database\Query\Builder|\kije\Show whereFkVeranstaltungID($value) 
  */
 class Show extends Eloquent
 {

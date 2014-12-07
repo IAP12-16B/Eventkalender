@@ -11,20 +11,23 @@
 |
 */
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
-
+// Home
 Route::any('/', function () {
-    //Route::redirect(''); // todo
-    return View::make('layouts.main');
+    return View::make('layouts.main'); // todo
 });
 
 // frontend
 //Route::resource('user', 'UserController', array('only' => array('index', 'show')));
 Route::resource('event', 'EventController', array('only' => array('index', 'show')));
 
+
+// login / logout
+Route::get('login', array('uses' => 'LoginController@showLogin', 'as' => 'login', 'before' => 'guest'));
+Route::post('login', array('uses' => 'LoginController@doLogin', 'as' => 'doLogin', 'before' => 'csrf'));
+Route::get('logout', array('uses' => 'LoginController@doLogout', 'as' => 'logout', 'before' => 'auth'));
+
 // backend
-Route::group(array('prefix' => 'admin', 'filter' => 'auth'), function () { // todo auth
+Route::group(array('prefix' => 'admin', 'before' => 'auth'), function () {
     Route::resource('user', 'UserController', array('only' => array('create', 'store', 'update', 'destroy')));
     Route::resource('event', 'EventController', array('only' => array('create', 'store', 'update', 'destroy')));
 });

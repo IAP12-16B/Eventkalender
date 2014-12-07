@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder {
             echo 'Create user "root" with password "password"'.PHP_EOL;
             $user = new User();
             $user->benutzername = 'root';
-            $user->ID = 1;
+            $user->id = 1;
             $user->setPassword('password');
             $user->save();
             echo 'Done'.PHP_EOL;
