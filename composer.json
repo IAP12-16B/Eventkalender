@@ -1,12 +1,13 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
+	"name": "kije/Eventkalender",
+	"description": "Eventcalendar for M151. Uses Laravel",
 	"keywords": ["framework", "laravel"],
-	"license": "MIT",
+	"license": "LGPLv3",
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"barryvdh/laravel-ide-helper": "v1.11.3"
+		"barryvdh/laravel-ide-helper": "v1.11.3",
+		"doctrine/dbal": "v2.5.0"
 	},
 	"autoload": {
 		"classmap": [
