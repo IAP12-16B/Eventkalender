@@ -7,7 +7,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
 		"barryvdh/laravel-ide-helper": "v1.11.3",
-		"doctrine/dbal": "v2.5.0"
+		"doctrine/dbal": "v2.5.0",
+		"lavary/laravel-menu": "v1.5.0"
 	},
 	"autoload": {
 		"classmap": [
