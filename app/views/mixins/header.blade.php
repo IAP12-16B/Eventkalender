@@ -5,7 +5,11 @@
         </h1>
 
         <nav class="main-nav">
-            {{-- Todo lavary --}}
+            @if(Auth::check())
+                {{ Menu::get('Admin')->asUl() }}
+            @else
+                {{ Menu::get('Main')->asUl() }}
+            @endif
         </nav>
 
         @if(Auth::check())
