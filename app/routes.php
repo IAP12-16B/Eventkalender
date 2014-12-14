@@ -21,11 +21,6 @@ Route::any('/', array(
 
 
 // frontend
-//Route::resource('user', 'UserController', array('only' => array('index', 'show')));
-/*Route::get('event/archive', array('uses' => 'EventController@archive', 'as' => 'event.archive'));
-Route::resource('event', 'EventController', array('only' => array('index', 'show'))); // todo check if these routes are used
-*/
-
 Route::get('show/archive', array('uses' => 'ShowController@archive', 'as' => 'show.archive'));
 Route::resource('show', 'ShowController', array('only' => array('index', 'show')));
 
@@ -43,9 +38,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'auth'), function () {
             return Redirect::route('admin.event.index');
         }
     ));
-    Route::resource('user', 'UserController', array('only' => array('index', 'create', 'store', 'update', 'destroy')));
+    //Route::resource('user', 'UserController', array('only' => array('index', 'create', 'store', 'update', 'destroy')));
     Route::resource('event', 'EventController',
-        array('only' => array('index', 'create', 'store', 'update', 'destroy')));
+        array('only' => array('index', 'create', 'store', 'update', 'destroy', 'edit')));
+
+    Route::resource('genre', 'GenreController', array('only' => array('edit', 'index', 'update', 'store', 'destroy')));
+    Route::resource('pricegroup', 'PricegroupController', array('only' => array('edit', 'index', 'update', 'store', 'destroy')));
 });
 
 

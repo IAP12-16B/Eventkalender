@@ -2,6 +2,7 @@
 {{-- Base --}}
 <link href="{{ asset('css/kube.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('css/normalize.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/cerabox.css') }}" rel="stylesheet" />
 @yield('css.base.after')
 
 {{-- Font-Awesome --}}

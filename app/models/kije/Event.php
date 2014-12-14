@@ -13,7 +13,7 @@ use stdClass;
  * @property string $name
  * @property string $besetzung
  * @property string $beschreibung
- * @property Carbon $dauer
+ * @property string $dauer
  * @property string $bild
  * @property string $bildbeschreibung
  * @property int $fk_Genre_ID
@@ -81,19 +81,6 @@ class Event extends BaseModel
         );
     }
 
-    public function getDauerAttribute($value)
-    {
-        return Carbon::createFromFormat('H:i+|', $value);
-    }
-
-    public function setDauerAttribute($value)
-    {
-        if ($value instanceof Carbon) {
-            $this->attributes['dauer'] = $value->toTimeString();
-        }
-
-        $this->attributes['dauer'] = $value;
-    }
 
     /**
      * @param bool $archive
@@ -110,8 +97,7 @@ class Event extends BaseModel
                     self::getColumnName('ID', false)
                 );
 
-        $q->where(Show::getColumnName('datum', false), ($archive ? '>' : '<'), 'NOW()')
-          ->where(Show::getColumnName('zeit', false), ($archive ? '>' : '<'), 'NOW()');
+        $q->where(Show::getColumnName('datum', false), ($archive ? '<' : '>'),  date('Y-m-d'));
 
         if (!empty($genre_id)) {
             if ($genre_id instanceof Genre) {

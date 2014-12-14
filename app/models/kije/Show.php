@@ -10,8 +10,8 @@ use Doctrine\DBAL\Query\QueryBuilder;
  * Class kije\Show
  *
  * @property int $ID
- * @property Carbon $datum
- * @property Carbon $zeit
+ * @property string $datum
+ * @property string $zeit
  * @property int $fk_Veranstaltung_ID
  * @property Event $event
  * @method static \Illuminate\Database\Query\Builder|\kije\Show whereID($value)
@@ -41,24 +41,6 @@ class Show extends BaseModel
         'fk_Veranstaltung_ID'
     );
 
-    public function getDates()
-    {
-        return array('datum');
-    }
-
-    public function getZeitAttribute($value)
-    {
-        return Carbon::createFromFormat('H:i+|', $value);
-    }
-
-    public function setZeitAttribute($value)
-    {
-        if ($value instanceof Carbon) {
-            $this->attributes['zeit'] = $value->toTimeString();
-        }
-
-        $this->attributes['zeit'] = $value;
-    }
 
     public function event()
     {
@@ -76,12 +58,13 @@ class Show extends BaseModel
         $q = \DB::table(self::getTableName())
                 ->leftJoin(
                     Event::getTableName(),
-                    Event::getColumnName('ID'), '=',
-                    self::getColumnName('fk_Veranstaltung_ID')
+                    Event::getColumnName('ID', false),
+                    '=',
+                    self::getColumnName('fk_Veranstaltung_ID', false)
                 );
 
-        $q->select(self::getColumnName('ID', true))
-          ->where(self::getColumnName('datum', false), '=', $this->datum->toDateString());
+        $q->select(self::getColumnName('ID', false))
+          ->where(self::getColumnName('datum', false), '=', $this->datum);
 
         $sub_query = \DB::table(self::getTableName());
 
@@ -91,7 +74,7 @@ class Show extends BaseModel
                 ' . self::getColumnName('zeit') . ' AND
                 ADDTIME(' . self::getColumnName('zeit') . ', ' . Event::getColumnName('dauer') . ')
             )',
-            array($this->zeit->toTimeString())
+            array($this->zeit)
         );
 
 
@@ -103,10 +86,11 @@ class Show extends BaseModel
                     ' . self::getColumnName('zeit') . ' AND
                     ADDTIME(' . self::getColumnName('zeit') . ', ' . Event::getColumnName('dauer') . ')
                 )',
-                array($this->zeit->toTimeString(), $event->dauer->toTimeString()),
+                array($this->zeit, $event->dauer),
                 'or'
             );
         }
+
 
         $q->addNestedWhereQuery($sub_query)->limit(1);
 
@@ -114,9 +98,8 @@ class Show extends BaseModel
     }
 
 
-    public function scopeIsArchive($query, $archive) {
-        return $query->where('datum', ($archive ? '>' : '<'), 'NOW()')
-                 ->where('zeit', ($archive ? '>' : '<'), 'NOW()');
+    public function scopeIsArchive($query, $archive = false) {
+        return $query->where('datum', ($archive ? '<' : '>'), date('Y-m-d'));
     }
 
     /**

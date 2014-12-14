@@ -1,0 +1,45 @@
+@extends('layouts.admin')
+
+@section('page.actions')
+    {{ Form::open(array('method' => 'POST', 'class' => 'forms-inline forms', 'action' => 'admin.pricegroup.store')) }}
+        {{ Form::text('name', Input::old('name'), array('placeholder' => 'Name')) }}
+        {{ Form::number('preis', Input::old('preis'), array('placeholder' => 'Price', 'step' => '0.05', 'min' => '0')) }}
+        {{ Form::button('Save', array('type' => 'submit', 'class' => 'btn')) }}
+    {{ Form::close() }}
+@endsection
+
+@section('page.content')
+    @if(!empty($pricegroups))
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th>Name / Price</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($pricegroups as $pricegroup)
+                    <tr>
+                        <td>
+                            {{ Form::model($pricegroup, array('method' => 'PUT', 'class' => 'forms-inline forms', 'action' => array('admin.pricegroup.update', $pricegroup->ID))) }}
+                                {{ Form::text('name', $pricegroup->name) }}
+                                {{ Form::number('preis', $pricegroup->preis, array('placeholder' => 'Price', 'step' => '0.05', 'min' => '0')) }}
+                                {{ Form::button('Save', array('type' => 'submit', 'class' => 'btn')) }}
+                            {{ Form::close() }}
+                        </td>
+
+                        <td>
+                            {{ Form::open(array('method' => 'DELETE', 'action' => array('admin.pricegroup.destroy', $pricegroup->ID))) }}
+                                <button type="submit" class="btn btn-small"><i class="fa fa-trash fa-fw"></i></button>
+                            {{ Form::close() }}
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p class="message">
+            There are currently no events!
+        </p>
+    @endif
+@endsection

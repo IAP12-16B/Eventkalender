@@ -5,6 +5,7 @@
     @yield('page.before')
     <div class="page units-row">
         @yield('page.top')
+        @yield('page.actions')
         @yield('page.content')
         @yield('page.bottom')
     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use kije\Genre;
 use kije\Show;
 
 class ShowController extends \BaseController
@@ -12,12 +13,35 @@ class ShowController extends \BaseController
      */
     public function index()
     {
-        return View::make('index', array('shows' => Show::isArchive(false)->chronologically()->get())); // todo paginate
+        $shows = Show::isArchive(false)->chronologically();
+        if (Input::has('genre')) {
+            /** @var kije\Genre $genre */
+            $genre = Genre::find(Input::get('genre'));
+            $event_ids = array_keys($genre->events->lists('name', 'ID'));
+            if (!empty($event_ids)) {
+                $shows->whereIn('fk_Veranstaltung_ID', $event_ids);
+            } else {
+                $shows->where('ID',0); // do not show
+            }
+        }
+        return View::make('index', array('shows' => $shows->paginate(10)));
     }
 
     public function archive()
     {
-        return View::make('index', array('shows' => Show::isArchive(true)->chronologically()->get()));
+
+        $shows = Show::isArchive(true)->chronologically();
+        if (Input::has('genre')) {
+            /** @var kije\Genre $genre */
+            $genre = Genre::find(Input::get('genre'));
+            $event_ids = array_keys($genre->events->lists('name', 'ID'));
+            if (!empty($event_ids)) {
+                $shows->whereIn('fk_Veranstaltung_ID', $event_ids);
+            } else {
+                $shows->where('ID',0); // do not show
+            }
+        }
+        return View::make('index', array('shows' => $shows->paginate(10)));
     }
 
     /**

@@ -5,9 +5,12 @@
     <?php $event = new kije\Event(); ?>
 @endif
 
+<?php // dd($event); ?>
+
 @section('page.content')
     @if($is_edit)
-        {{ Form::model($event, array('route' => 'admin.event.update', 'method' => 'PUT', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
+        {{ Form::model($event, array('route' => array('admin.event.update', $event->ID), 'method' => 'PUT', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
+
     @else
         {{ Form::open(array('route' => 'admin.event.store', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
     @endif
@@ -32,6 +35,10 @@
             <li class="edit-box">
                 <fieldset>
                     <legend>Image</legend>
+                    {{-- Todo delete image --}}
+                    @if(!empty($event->bild))
+                        <img src="{{ url($event->bild) }}" alt="">
+                    @endif
                     {{ Form::label('bild', 'Image', array('class' => 'width-100')) }}
                     {{ Form::file('bild') }}
 
@@ -67,14 +74,23 @@
                         <ul class="link-list repeatable-list">
                             <?php $num_link = 0; ?>
                             @if(!empty($links))
-                                {{-- Todo show existing links --}}
+                                @foreach($links as $link)
+                                    <li>
+                                        {{ Form::label('links['.$num_link.'][name]', 'Link-Name', array('class' => 'unit-100')) }}
+                                        {{ Form::text('links['.$num_link.'][name]', Input::old('links['.$num_link.'][name]', $link->name), array('class' => 'width-100')) }}
+
+                                        {{ Form::label('links['.$num_link.'][link]', 'Link-URL', array('class' => 'unit-100')) }}
+                                        {{ Form::text('links['.$num_link.'][link]', Input::old('links['.$num_link.'][link]', $link->link), array('class' => 'width-100')) }}
+                                    </li>
+                                    <?php $num_link++; ?>
+                                @endforeach
                             @endif
                             <li>
                                 {{ Form::label('links['.$num_link.'][name]', 'Link-Name', array('class' => 'unit-100')) }}
-                                {{ Form::text('links['.$num_link.'][name]', null, array('class' => 'width-100')) }}
+                                {{ Form::text('links['.$num_link.'][name]', Input::old('links['.$num_link.'][name]'), array('class' => 'width-100')) }}
 
                                 {{ Form::label('links['.$num_link.'][link]', 'Link-URL', array('class' => 'unit-100')) }}
-                                {{ Form::text('links['.$num_link.'][link]', null, array('class' => 'width-100')) }}
+                                {{ Form::text('links['.$num_link.'][link]', Input::old('links['.$num_link.'][link]'), array('class' => 'width-100')) }}
                                 <?php $num_link++; ?>
                             </li>
                         </ul>
@@ -91,14 +107,23 @@
                         <ul class="show-list repeatable-list">
                             <?php $num_shows = 0; ?>
                             @if(!empty($shows))
-                                {{-- Todo show existing shows --}}
+                                @foreach($shows as $show)
+                                    <li>
+                                        {{ Form::label('shows['.$num_shows.'][datum]', 'Date', array('class' => 'unit-100')) }}
+                                        {{ Form::input('date', 'shows['.$num_shows.'][datum]', Input::old('shows['.$num_shows.'][datum]', $show->datum), array('class' => 'width-100')) }}
+
+                                        {{ Form::label('shows['.$num_shows.'][zeit]', 'Time', array('class' => 'unit-100')) }}
+                                        {{ Form::input('time', 'shows['.$num_shows.'][zeit]', Input::old('shows['.$num_shows.'][zeit]', $show->zeit), array('class' => 'width-100')) }}
+                                    </li>
+                                    <?php $num_shows++; ?>
+                                @endforeach
                             @endif
                             <li>
                                 {{ Form::label('shows['.$num_shows.'][datum]', 'Date', array('class' => 'unit-100')) }}
-                                {{ Form::input('date', 'shows['.$num_shows.'][datum]', null, array('class' => 'width-100')) }}
+                                {{ Form::input('date', 'shows['.$num_shows.'][datum]', Input::old('shows['.$num_shows.'][datum]'), array('class' => 'width-100')) }}
 
                                 {{ Form::label('shows['.$num_shows.'][zeit]', 'Time', array('class' => 'unit-100')) }}
-                                {{ Form::input('time', 'shows['.$num_shows.'][zeit]', null, array('class' => 'width-100')) }}
+                                {{ Form::input('time', 'shows['.$num_shows.'][zeit]', Input::old('shows['.$num_shows.'][zeit]'), array('class' => 'width-100')) }}
                                 <?php $num_link++; ?>
                             </li>
                         </ul>

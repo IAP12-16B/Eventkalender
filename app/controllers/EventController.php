@@ -5,6 +5,7 @@ use kije\Event;
 use kije\Genre;
 use kije\Link;
 use kije\Pricegroup;
+use kije\Show;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class EventController extends \BaseController
@@ -17,16 +18,10 @@ class EventController extends \BaseController
      */
     public function index()
     {
-
+        $events = Event::all();
+        return View::make('admin.event.index', array('events' => $events)); // todo genrefilter
     }
 
-    /**
-     *
-     * @return Response
-     */
-    public function archive()
-    {
-    }
 
 
     /**
@@ -52,122 +47,125 @@ class EventController extends \BaseController
      */
     public function store()
     {
-        $validator = Validator::make(
-            Input::all(),
-            array(
-                'name' => 'required',
-                'beschreibung' => 'required',
-                'dauer' => 'required',
-                'fk_Genre_ID' => 'required|exists:' . Genre::getTableName() . ',ID'
-            )
-        );
+        return $this->editOrCreate();
+    }
 
-        if ($validator->fails()) {
+    protected function editOrCreate($event_id = null) {
+        return DB::transaction(function () use ($event_id) {
+            $validator = Validator::make(
+                Input::all(),
+                array(
+                    'name' => 'required',
+                    'beschreibung' => 'required',
+                    'dauer' => 'required',
+                    'fk_Genre_ID' => 'required|exists:' . Genre::getTableName() . ',ID'
+                )
+            );
 
-            dd($validator->messages()); // todo error message
-            Notification::message($validator->messages());
+            if ($validator->fails()) {
 
-            return Redirect::back()->withInput(Input::all());
-        }
+                dd($validator->messages()); // todo error message
+                Notification::message($validator->messages());
 
-
-        $new_event = new Event(Input::only('name', 'beschreibung', 'dauer'));
-        $new_event->dauer = Input::get('dauer');
-
-        $new_event->genre()->associate(Genre::find(Input::get('fk_Genre_ID')));
-
-        foreach (array('besetzung', 'bildbeschreibung') as $optional_field) {
-            if (Input::has($optional_field)) {
-                $new_event->$optional_field = Input::get($optional_field);
+                return Redirect::back()->withInput(Input::all());
             }
-        }
 
-        if (Input::hasFile('bild') && Input::file('bild')->isValid()) {
-            $file = Input::file('bild');
-            $extension = strtolower($file->getClientOriginalExtension());
-
-            if (!in_array($extension, array('png', 'jpg', 'jpeg', 'gif'))) {
-                // todo error message
+            $data = Input::only('name', 'beschreibung', 'dauer');
+            if (empty($event_id)) {
+                $event = new Event($data);
             } else {
-                $upload_path = public_path() .
-                               DIRECTORY_SEPARATOR .
-                               'img' .
-                               DIRECTORY_SEPARATOR .
-                               'uploads' .
-                               DIRECTORY_SEPARATOR;
-                $new_file_name =
-                    str_random(12) .
-                    '.' .
-                    $extension;
+                $event = Event::findOrNew($event_id);
+                $event->fill($data);
+            }
 
-                try {
-                    $file = $file->move($upload_path, $new_file_name);
-                    $new_event->bild =
-                        str_replace(public_path(), '', realpath($file->getPath() . '/' . $file->getBasename()));
-                } catch (FileException $e) {
+            $event->genre()->associate(Genre::find(Input::get('fk_Genre_ID')));
+
+            foreach (array('besetzung', 'bildbeschreibung') as $optional_field) {
+                if (Input::has($optional_field)) {
+                    $event->$optional_field = Input::get($optional_field);
+                }
+            }
+
+            if (Input::hasFile('bild') && Input::file('bild')->isValid()) {
+                $file = Input::file('bild');
+                $extension = strtolower($file->getClientOriginalExtension());
+
+                if (!in_array($extension, array('png', 'jpg', 'jpeg', 'gif'))) {
                     // todo error message
+                } else {
+                    $upload_path = public_path() .
+                                   DIRECTORY_SEPARATOR .
+                                   'img' .
+                                   DIRECTORY_SEPARATOR .
+                                   'uploads' .
+                                   DIRECTORY_SEPARATOR;
+                    $new_file_name =
+                        str_random(12) .
+                        '.' .
+                        $extension;
+
+                    try {
+                        $file = $file->move($upload_path, $new_file_name);
+                        $event->bild =
+                            str_replace(public_path(), '', realpath($file->getPath() . '/' . $file->getBasename()));
+                    } catch (FileException $e) {
+                        // todo error message
+                    }
                 }
             }
-        }
 
-        try {
-            $new_event->save();
-        } catch (Exception $e) {
-            // todo error
-        }
+            try {
+                $event->save();
+            } catch (Exception $e) {
+                // todo error
+            }
 
-        /*if (Input::has('pricegroups')) {
-            foreach(Input::get('pricegroups') as $pricegroup_id) {
-                $pricegroup = Pricegroup::find($pricegroup_id);
-                if (!empty($pricegroup) && !$pricegroup->isEmpty()) {
-                    $new_event->pricegroups()->save($pricegroup);
+
+            if (Input::has('pricegroups')) {
+                $event->pricegroups()->sync(Input::get('pricegroups'));
+            } else {
+                $event->pricegroups()->detach();
+            }
+
+            // update relations to links and shows
+
+            if (Input::has('links')) {
+                $event->links()->delete();
+                foreach(Input::get('links') as $link_data) {
+                    if (!empty($link_data['link'])) {
+                        $link = new Link($link_data);
+                        $event->links()->save($link);
+                    }
                 }
             }
-        }*/
 
-        if (Input::has('pricegroups')) {
-            $new_event->pricegroups()->sync(Input::get('pricegroups'));
-        } else {
-            $new_event->pricegroups()->detach();
-        }
+            if (Input::has('shows')) {
+                $event->shows()->delete();
+                $shows = Input::get('shows');
 
-        /*if (Input::has('links')) {
-            $new_event->links()->delete();
-
-            foreach(Input::get('links') as $link_data) {
-                if (!empty($link_data) && !empty($link_data['link'])) {
-                    $link = new Link($link_data);
-                    $new_event->links()->save($link);
+                foreach($shows as $show_data) {
+                    if (!empty($show_data['datum']) && !empty($show_data['zeit'])) {
+                        $show = new Show($show_data);
+                        if (!$show->hasCollision()) {
+                            $event->shows()->save($show);
+                        }
+                    }
                 }
             }
-        }
 
-        if (Input::has('shows')) {
-            $new_event->links()->delete();
 
-            foreach(Input::get('links') as $link_data) {
-                if (!empty($link_data) && !empty($link_data['link'])) {
-                    $link = new Link($link_data);
-                    $new_event->links()->save($link);
-                }
+            try {
+                $event->save();
+            } catch (Exception $e) {
+                // todo error
             }
-        }*/
 
-        // update relations to links and presentations
-        $new_event->links()->delete();
-        $new_event->links()->createMany(Input::get('links'));
+            // todo success notification
+            return Redirect::route('admin.event.edit', $event->ID);
+        });
 
-        $new_event->shows()->delete();
-        $new_event->shows()->createMany(Input::get('shows'));
 
-        try {
-            $new_event->save();
-        } catch(Exception $e) {
-            // todo error
-        }
 
-        // todo success notification
-        return Redirect::back();
     }
 
 
@@ -191,7 +189,17 @@ class EventController extends \BaseController
      */
     public function edit($id)
     {
-        //
+        $event = Event::find($id);
+
+        return View::make(
+            'admin.event.edit',
+            array(
+                'event' => $event,
+                'pricegroups' => Pricegroup::all(),
+                'links' => $event->links,
+                'shows' => $event->shows
+            )
+        );
     }
 
 
@@ -203,7 +211,7 @@ class EventController extends \BaseController
      */
     public function update($id)
     {
-        //
+        return $this->editOrCreate($id);
     }
 
 
@@ -215,7 +223,10 @@ class EventController extends \BaseController
      */
     public function destroy($id)
     {
-        //
+        Event::find($id)->delete();
+
+        // todo success notification
+        return Redirect::back();
     }
 
 
