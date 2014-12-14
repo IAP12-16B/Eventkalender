@@ -43,7 +43,7 @@
                 <fieldset>
                     <legend>Additional</legend>
                     {{ Form::label('fk_Genre_ID', 'Genre', array('class' => 'width-100')) }}
-                    {{ Form::select('fk_Genre_ID', kije\Genre::lists('name', 'ID'), Input::old('fk_Genre_ID'), array('class' => 'width-100')) }}
+                    {{ Form::select('fk_Genre_ID', kije\Genre::lists('name', 'ID'), Input::old('fk_Genre_ID'), array('class' => 'width-100', 'required' => 'required')) }}
 
                     @if(!empty($pricegroups))
                         <ul class="forms-list">
@@ -63,12 +63,49 @@
                 <fieldset>
                     <legend>Links</legend>
 
+                    <div class="link-input-container repeatable-inputs">
+                        <ul class="link-list repeatable-list">
+                            <?php $num_link = 0; ?>
+                            @if(!empty($links))
+                                {{-- Todo show existing links --}}
+                            @endif
+                            <li>
+                                {{ Form::label('links['.$num_link.'][name]', 'Link-Name', array('class' => 'unit-100')) }}
+                                {{ Form::text('links['.$num_link.'][name]', null, array('class' => 'width-100')) }}
+
+                                {{ Form::label('links['.$num_link.'][link]', 'Link-URL', array('class' => 'unit-100')) }}
+                                {{ Form::text('links['.$num_link.'][link]', null, array('class' => 'width-100')) }}
+                                <?php $num_link++; ?>
+                            </li>
+                        </ul>
+                        <button type="button" class="repeat-button btn btn-green">
+                            <i class="fa fa-plus fa-lg fa-fw"></i>
+                        </button>
+                    </div>
                 </fieldset>
             </li>
             <li class="edit-box">
                 <fieldset>
                     <legend>Shows</legend>
-                    {{-- Todo shows --}}
+                    <div class="show-input-container repeatable-inputs">
+                        <ul class="show-list repeatable-list">
+                            <?php $num_shows = 0; ?>
+                            @if(!empty($shows))
+                                {{-- Todo show existing shows --}}
+                            @endif
+                            <li>
+                                {{ Form::label('shows['.$num_shows.'][datum]', 'Date', array('class' => 'unit-100')) }}
+                                {{ Form::input('date', 'shows['.$num_shows.'][datum]', null, array('class' => 'width-100')) }}
+
+                                {{ Form::label('shows['.$num_shows.'][zeit]', 'Time', array('class' => 'unit-100')) }}
+                                {{ Form::input('time', 'shows['.$num_shows.'][zeit]', null, array('class' => 'width-100')) }}
+                                <?php $num_link++; ?>
+                            </li>
+                        </ul>
+                        <button type="button" class="repeat-button btn btn-green">
+                            <i class="fa fa-plus fa-lg fa-fw"></i>
+                        </button>
+                    </div>
                 </fieldset>
             </li>
         </ul>
