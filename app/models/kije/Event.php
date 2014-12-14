@@ -83,12 +83,16 @@ class Event extends BaseModel
 
     public function getDauerAttribute($value)
     {
-        return Carbon::createFromFormat('H:i:s', $value);
+        return Carbon::createFromFormat('H:i+|', $value);
     }
 
-    public function setDauerAttribute(Carbon $value)
+    public function setDauerAttribute($value)
     {
-        $this->attributes['dauer'] = $value->toTimeString();
+        if ($value instanceof Carbon) {
+            $this->attributes['dauer'] = $value->toTimeString();
+        }
+
+        $this->attributes['dauer'] = $value;
     }
 
     /**

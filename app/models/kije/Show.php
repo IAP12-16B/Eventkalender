@@ -48,12 +48,16 @@ class Show extends BaseModel
 
     public function getZeitAttribute($value)
     {
-        return Carbon::createFromFormat('H:i:s', $value);
+        return Carbon::createFromFormat('H:i+|', $value);
     }
 
-    public function setZeitAttribute(Carbon $value)
+    public function setZeitAttribute($value)
     {
-        $this->attributes['dauer'] = $value->toTimeString();
+        if ($value instanceof Carbon) {
+            $this->attributes['zeit'] = $value->toTimeString();
+        }
+
+        $this->attributes['zeit'] = $value;
     }
 
     public function event()
