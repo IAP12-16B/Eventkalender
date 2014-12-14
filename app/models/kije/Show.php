@@ -96,7 +96,6 @@ class Show extends Eloquent
 
         $q->whereRaw($raw_where_sql, $where_data)->limit(1);
 
-        dd($q->toSql(), $q->count(), $q->get());
         return $q->exists();
     }
 
