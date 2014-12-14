@@ -1,6 +1,9 @@
 <?php
 
 
+use Carbon\Carbon;
+use kije\Event;
+use kije\Show;
 
 class EventController extends \BaseController
 {
@@ -12,7 +15,15 @@ class EventController extends \BaseController
      */
     public function index()
     {
-        //
+
+    }
+
+    /**
+     *
+     * @return Response
+     */
+    public function archive()
+    {
     }
 
 

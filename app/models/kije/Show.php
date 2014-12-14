@@ -4,7 +4,7 @@
 namespace kije;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
  * Class kije\Show
@@ -18,29 +18,17 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\kije\Show whereDatum($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Show whereZeit($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Show whereFkVeranstaltungID($value)
+ * @method static \kije\Show isArchive($archive)
+ * @method static \kije\Show chronologically()
  */
-class Show extends Eloquent
+class Show extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Vorstellung';
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
+    protected static $tablename = 'Vorstellung';
 
     /**
      * The attributes that are mass assignable.
@@ -55,7 +43,17 @@ class Show extends Eloquent
 
     public function getDates()
     {
-        return array('datum', 'zeit');
+        return array('datum');
+    }
+
+    public function getZeitAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value);
+    }
+
+    public function setZeitAttribute(Carbon $value)
+    {
+        $this->attributes['dauer'] = $value->toTimeString();
     }
 
     public function event()
@@ -70,33 +68,58 @@ class Show extends Eloquent
     public function hasCollision($event = null)
     {
         $event = ($this->event ? $this->event : $event);
-        $q = self::query()
-                 ->getQuery()
-                 ->select($this->table . '.ID')
-                 ->leftJoin('Veranstaltung', 'Veranstaltung.ID', '=', $this->table . '.fk_Veranstaltung_ID')
-                 ->where($this->table . '.datum', '=', $this->datum->toDateString());
 
-        $raw_where_sql = '(
-                        (? BETWEEN
-                            `' . $this->table . '`.`zeit` AND
-                            ADDTIME(`' . $this->table . '`.`zeit`, `Veranstaltung`.`dauer`))
-                    ';
-        $where_data = array($this->zeit->toTimeString());
+        $q = \DB::table(self::getTableName())
+                ->leftJoin(
+                    Event::getTableName(),
+                    Event::getColumnName('ID'), '=',
+                    self::getColumnName('fk_Veranstaltung_ID')
+                );
+
+        $q->select(self::getColumnName('ID', true))
+          ->where(self::getColumnName('datum', false), '=', $this->datum->toDateString());
+
+        $sub_query = \DB::table(self::getTableName());
+
+        $sub_query->whereRaw(
+            '(
+                ? BETWEEN
+                ' . self::getColumnName('zeit') . ' AND
+                ADDTIME(' . self::getColumnName('zeit') . ', ' . Event::getColumnName('dauer') . ')
+            )',
+            array($this->zeit->toTimeString())
+        );
+
 
 
         if (!empty($event)) {
-            $raw_where_sql .= ' OR (ADDTIME(?, ?) BETWEEN
-                        `' . $this->table . '`.`zeit` AND
-                        ADDTIME(`' . $this->table . '`.`zeit`, `Veranstaltung`.`dauer`))';
-            $where_data = array_merge($where_data, array($this->zeit->toTimeString(), $event->dauer->toTimeString()));
+            $sub_query->whereRaw(
+                '(
+                    ADDTIME(?, ?) BETWEEN
+                    ' . self::getColumnName('zeit') . ' AND
+                    ADDTIME(' . self::getColumnName('zeit') . ', ' . Event::getColumnName('dauer') . ')
+                )',
+                array($this->zeit->toTimeString(), $event->dauer->toTimeString()),
+                'or'
+            );
         }
 
-        $raw_where_sql .= ')';
-
-
-        $q->whereRaw($raw_where_sql, $where_data)->limit(1);
+        $q->addNestedWhereQuery($sub_query)->limit(1);
 
         return $q->exists();
     }
 
+
+    public function scopeIsArchive($query, $archive) {
+        return $query->where('datum', ($archive ? '>' : '<'), 'NOW()')
+                 ->where('zeit', ($archive ? '>' : '<'), 'NOW()');
+    }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeChronologically( $query) {
+        return $query->orderBy('datum')->orderBy('zeit');
+    }
 }

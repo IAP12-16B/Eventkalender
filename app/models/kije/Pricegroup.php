@@ -14,36 +14,27 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @propertx Collection $events
  * @property-read \Illuminate\Database\Eloquent\Collection|\
  *             'kije\Event[] $events
- * @property-read \Illuminate\Database\Eloquent\Collection|\
- *             'kije\Event[] $events
  * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereID($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Pricegroup wherePreis($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\
  *             'kije\Event[] $events
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
+ * @property-read \Illuminate\Database\Eloquent\Collection|\
+ *             'kije\Event[] $events
  */
-class Pricegroup extends Eloquent
+class Pricegroup extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Preisgruppe';
+    protected static $tablename = 'Preisgruppe';
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
 
     /**
      * The attributes that are mass assignable.

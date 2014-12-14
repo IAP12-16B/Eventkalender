@@ -14,28 +14,14 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereID($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Genre whereName($value)
  */
-class Genre extends Eloquent
+class Genre extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Genre';
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
+    protected static $tablename = 'Genre';
 
     /**
      * The attributes that are mass assignable.

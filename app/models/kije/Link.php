@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\kije\Link whereLink($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Link whereFkVeranstaltungID($value)
  */
-class Link extends Eloquent
+class Link extends BaseModel
 {
 
     /**
@@ -25,21 +25,8 @@ class Link extends Eloquent
      *
      * @var string
      */
-    protected $table = 'Link';
+    protected static $tablename = 'Link';
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
 
     /**
      * The attributes that are mass assignable.

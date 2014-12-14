@@ -4,7 +4,7 @@ namespace kije;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model as Eloquent;
+use stdClass;
 
 /**
  * Class kije\Event
@@ -30,28 +30,15 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @method static \Illuminate\Database\Query\Builder|\kije\Event whereBildbeschreibung($value)
  * @method static \Illuminate\Database\Query\Builder|\kije\Event whereFkGenreID($value)
  */
-class Event extends Eloquent
+class Event extends BaseModel
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'Veranstaltung';
+    protected static $tablename = 'Veranstaltung';
 
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'ID';
 
     /**
      * The attributes that are mass assignable.
@@ -94,11 +81,6 @@ class Event extends Eloquent
         );
     }
 
-    public function getDates()
-    {
-        return array();
-    }
-
     public function getDauerAttribute($value)
     {
         return Carbon::createFromFormat('H:i:s', $value);
@@ -107,5 +89,46 @@ class Event extends Eloquent
     public function setDauerAttribute(Carbon $value)
     {
         $this->attributes['dauer'] = $value->toTimeString();
+    }
+
+    /**
+     * @param bool $archive
+     * @param null $genre_id
+     * @return Collection|\Illuminate\Database\Eloquent\Model|static
+     */
+    public static function filter($archive = false, $genre_id = null)
+    {
+        $q = \DB::table(self::getTableName())
+                ->leftJoin(
+                    Show::getTableName(),
+                    Show::getColumnName('fk_Veranstaltung_ID', false),
+                    '=',
+                    self::getColumnName('ID', false)
+                );
+
+        $q->where(Show::getColumnName('datum', false), ($archive ? '>' : '<'), 'NOW()')
+          ->where(Show::getColumnName('zeit', false), ($archive ? '>' : '<'), 'NOW()');
+
+        if (!empty($genre_id)) {
+            if ($genre_id instanceof Genre) {
+                $genre_id = $genre_id->ID;
+            }
+
+            $q->where(self::getColumnName('fk_Genre_ID', false), '=', $genre_id);
+        }
+
+
+        return self::findMany(
+            array_map(
+                function (stdClass $k) {
+                    return $k->ID;
+                },
+                $q->get(
+                    array(
+                        self::getColumnName('ID', false)
+                    )
+                )
+            )
+        );
     }
 }
