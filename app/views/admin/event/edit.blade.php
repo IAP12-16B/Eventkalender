@@ -7,7 +7,7 @@
 
 @section('page.content')
     @if($is_edit)
-        {{ Form::model($event, array('route' => 'admin.event.update', 'method' => 'PATCH', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
+        {{ Form::model($event, array('route' => 'admin.event.update', 'method' => 'PUT', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
     @else
         {{ Form::open(array('route' => 'admin.event.store', 'class' => 'admin-form event-edit-form forms', 'files' => true)) }}
     @endif
@@ -17,7 +17,7 @@
                 <fieldset>
                     <legend>General</legend>
                     {{ Form::label('name', 'Name*', array('class' => 'width-100')) }}
-                    {{ Form::text('name', Input::old('name'), array('class' => 'width-100', 'required' => 'required')) }}
+                    {{ Form::text('name', Input::old('name'), array('class' => 'width-100', /*'required' => 'required'*/)) }}
 
                     {{ Form::label('besetzung', 'Line-Up', array('class' => 'width-100')) }}
                     {{ Form::text('besetzung', Input::old('besetzung'), array('class' => 'width-100')) }}
@@ -42,7 +42,7 @@
             <li class="edit-box">
                 <fieldset>
                     <legend>Additional</legend>
-                    {{ Form::label('fk_Genre_ID', 'Genre', array('class' => 'width-100')) }}
+                    {{ Form::label('fk_Genre_ID', 'Genre*', array('class' => 'width-100')) }}
                     {{ Form::select('fk_Genre_ID', kije\Genre::lists('name', 'ID'), Input::old('fk_Genre_ID'), array('class' => 'width-100', 'required' => 'required')) }}
 
                     @if(!empty($pricegroups))

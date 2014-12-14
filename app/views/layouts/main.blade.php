@@ -20,6 +20,9 @@
     <div class="outer-wrapper">
         @include('mixins.header')
         @yield('wrapper.outer.top')
+        @section('wrapper.notificattions')
+            {{ Notification::showAll() }}
+        @endsection
         <div class="inner-wrapper units-row">
             @yield('wrapper.inner.top')
             @yield('wrapper.inner.content')
