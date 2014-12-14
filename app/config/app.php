@@ -116,6 +116,7 @@ return array(
         'Illuminate\Workbench\WorkbenchServiceProvider',
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Lavary\Menu\ServiceProvider',
+        'Krucas\Notification\NotificationServiceProvider'
     ),
     /*
     |--------------------------------------------------------------------------
@@ -181,6 +182,7 @@ return array(
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View' => 'Illuminate\Support\Facades\View',
         'Menu' => 'Lavary\Menu\Facade',
+        'Notification' => 'Krucas\Notification\Facades\Notification'
     ),
 
 );

@@ -8,7 +8,9 @@
 		"laravel/framework": "4.2.*",
 		"barryvdh/laravel-ide-helper": "v1.11.3",
 		"doctrine/dbal": "v2.5.0",
-		"lavary/laravel-menu": "v1.5.0"
+		"lavary/laravel-menu": "v1.5.0",
+		"illuminate/support": "v4.2.12",
+		"edvinaskrucas/notification": "3.0.1"
 	},
 	"autoload": {
 		"classmap": [
