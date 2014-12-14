@@ -49,7 +49,7 @@ return array(
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'en_CH',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
