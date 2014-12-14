@@ -79,3 +79,4 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+include_once __DIR__.'/functions.php';
