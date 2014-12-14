@@ -62,4 +62,42 @@ class Show extends Eloquent
     {
         return $this->belongsTo('kije\Event', 'fk_Veranstaltung_ID');
     }
+
+    /**
+     * @param \kije\Event $event Event (only used, if this Show is not already linked to an event)
+     * @return bool
+     */
+    public function hasCollision($event = null)
+    {
+        $event = ($this->event ? $this->event : $event);
+        $q = self::query()
+                 ->getQuery()
+                 ->select($this->table . '.ID')
+                 ->leftJoin('Veranstaltung', 'Veranstaltung.ID', '=', $this->table . '.fk_Veranstaltung_ID')
+                 ->where($this->table . '.datum', '=', $this->datum->toDateString());
+
+        $raw_where_sql = '(
+                        (? BETWEEN
+                            `' . $this->table . '`.`zeit` AND
+                            ADDTIME(`' . $this->table . '`.`zeit`, `Veranstaltung`.`dauer`))
+                    ';
+        $where_data = array($this->zeit->toTimeString());
+
+
+        if (!empty($event)) {
+            $raw_where_sql .= ' OR (ADDTIME(?, ?) BETWEEN
+                        `' . $this->table . '`.`zeit` AND
+                        ADDTIME(`' . $this->table . '`.`zeit`, `Veranstaltung`.`dauer`))';
+            $where_data = array_merge($where_data, array($this->zeit->toTimeString(), $event->dauer->toTimeString()));
+        }
+
+        $raw_where_sql .= ')';
+
+
+        $q->whereRaw($raw_where_sql, $where_data)->limit(1);
+
+        dd($q->toSql(), $q->count(), $q->get());
+        return $q->exists();
+    }
+
 }

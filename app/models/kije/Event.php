@@ -96,6 +96,16 @@ class Event extends Eloquent
 
     public function getDates()
     {
-        return array('dauer');
+        return array();
+    }
+
+    public function getDauerAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value);
+    }
+
+    public function setDauerAttribute(Carbon $value)
+    {
+        $this->attributes['dauer'] = $value->toTimeString();
     }
 }
