@@ -3,6 +3,8 @@
 
 use Carbon\Carbon;
 use kije\Event;
+use kije\Link;
+use kije\Pricegroup;
 use kije\Show;
 
 class EventController extends \BaseController
@@ -34,6 +36,12 @@ class EventController extends \BaseController
      */
     public function create()
     {
+        return View::make(
+            'admin.event.edit',
+            array(
+                'pricegroups' => Pricegroup::all(),
+            )
+        );
         /*$ev = new Event();
         $ev->name = '';
         $ev->beschreibung = '50';
