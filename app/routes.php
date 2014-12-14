@@ -12,9 +12,13 @@
 */
 
 // Home
-Route::any('/', function () {
-    return View::make('layouts.main'); // todo
-});
+Route::any('/', array(
+    'as' => 'home',
+    function () {
+        return Redirect::route('show.index');
+    }
+));
+
 
 // frontend
 //Route::resource('user', 'UserController', array('only' => array('index', 'show')));
@@ -33,9 +37,16 @@ Route::get('logout', array('uses' => 'LoginController@doLogout', 'as' => 'logout
 
 // backend
 Route::group(array('prefix' => 'admin', 'before' => 'auth'), function () {
-    Route::resource('user', 'UserController', array('only' => array('create', 'store', 'update', 'destroy')));
-    Route::resource('event', 'EventController', array('only' => array('create', 'store', 'update', 'destroy')));
+    Route::any('/', array(
+        'as' => 'home',
+        function () {
+            return Redirect::route('admin.event.index');
+        }
+    ));
+    Route::resource('user', 'UserController', array('only' => array('index', 'create', 'store', 'update', 'destroy')));
+    Route::resource('event', 'EventController',
+        array('only' => array('index', 'create', 'store', 'update', 'destroy')));
 });
 
 
-require app_path().'/menu.php';
+require app_path() . '/menu.php';
