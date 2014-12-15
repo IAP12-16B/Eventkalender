@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header clearfix">
     <div class="main-header">
         <h1 class="brand">
             <span>Eventcalendar</span>
@@ -6,9 +6,9 @@
 
         <nav class="main-nav">
             @if(Auth::check())
-                {{ Menu::get('Admin')->asUl() }}
+                {{ Menu::get('Admin')->asUl(array('class' => 'navbar navbar-left')) }}
             @else
-                {{ Menu::get('Main')->asUl() }}
+                {{ Menu::get('Main')->asUl(array('class' => 'navbar navbar-left')) }}
             @endif
         </nav>
 

@@ -1,5 +1,5 @@
 document.addEvent('domready', function() {
-	$$('.lightbox-images').each(function(gallery) {
+	$$('.lightbox-images,.show-image').each(function(gallery) {
 		gallery.getElements('a[href$=jpg],a[href$=JPG],a[href$=jpeg],a[href$=JPEG],a[href$=png],a[href$=PNG]').cerabox({
            animation: 'ease',
            displayTitle: false,

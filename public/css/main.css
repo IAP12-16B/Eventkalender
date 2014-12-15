@@ -8,3 +8,85 @@ html, body, input, textarea, :root {
 	width: 980px;
 	margin: 0 auto;
 }
+
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
+}
+
+.clearfix:after {
+	clear: both;
+}
+
+
+.header {
+	padding: 1em 2em;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 1.5em;
+}
+
+.header .brand,
+.header .main-nav {
+	float: left;
+}
+
+.header .logout {
+	float: right;
+}
+
+.header .main-nav ul {
+	list-style: none;
+}
+
+.header .main-nav > ul  li {
+	position: relative;
+	padding: 0.2em 1.5em;
+}
+
+.header .main-nav > ul > li > ul {
+	display: none;
+	position: absolute;
+	top: auto;
+	left: 0;
+	right: -100%;
+}
+
+
+.header .main-nav > ul > li:hover > ul,
+.header .main-nav > ul > li > ul:hover {
+	display: block;
+}
+
+.header .main-nav > ul li.active li:hover a {
+	color: #000;
+	cursor: pointer;
+}
+
+.header .main-nav > ul  li.divider {
+	padding: 0;
+	margin: 0.2em 0;
+	border-top: 1px solid #222;
+}
+
+.filter-form select,
+.filter-form button{
+	float: left;
+	margin-right: 0.5em;
+}
+
+.shows-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.shows-list li {
+	padding: 1em 0;
+	border-bottom: 1px dotted #000;
+}
+
+.shows-list li .show-image{
+	float: left;
+	padding-right: 1em;
+}

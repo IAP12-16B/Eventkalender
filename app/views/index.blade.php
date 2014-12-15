@@ -2,7 +2,7 @@
 
 @section('page.actions')
     <div class="filter">
-        {{ Form::open(array('route' => Route::getCurrentRoute()->getName(), 'class' => 'filter-form forms', 'method' => 'get')) }}
+        {{ Form::open(array('route' => Route::getCurrentRoute()->getName(), 'class' => 'filter-form forms clearfix', 'method' => 'get')) }}
             {{ Form::select('genre', array('' => '-- Please select --') + kije\Genre::lists('name', 'ID'), Input::get('genre')) }}
             {{ Form::button('Filter', array('type' => 'submit', 'class' => 'btn btn-red')) }}
         {{ Form::close() }}
@@ -22,11 +22,14 @@
                     <li class="clearfix">
                         <div class="show-image">
                             @if(!empty($show->event->bild))
+                            <a href="{{ url($show->event->bild) }}">
                                 <img
                                     src="{{ url($show->event->bild) }}"
                                     alt="{{ $show->event->bildbeschreibung }}"
                                     title="{{ $show->event->bildbeschreibung }}"
+                                    width="100"
                                 >
+                                </a>
                             @endif
                         </div>
                         <div class="show-info">
