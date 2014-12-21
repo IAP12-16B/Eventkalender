@@ -36,6 +36,10 @@
                                   <td>{{ $show->event->genre->name }}</td>
                               </tr>
                               <tr>
+                                <td>Line-up</td>
+                                <td>{{ $show->event->besetzung }}</td>
+                              </tr>
+                              <tr>
                                   <td>Pricegroups</td>
                                   <td>
                                       <ul class="forms-list">
@@ -48,6 +52,16 @@
                           </tbody>
                      </table>
                      </div>
+                     @if(!$show->event->links->isEmpty())
+                     <div class="links">
+                     <ul>
+                     @foreach($show->event->links as $link)
+                        <li><a href="{{ $link->link }}">{{ $link->name or $link->link }}</a></li>
+                     @endforeach
+                     </ul>
+
+                     </div>
+                     @endif
        </div>
     </div>
 @endsection

@@ -21,8 +21,11 @@
         @include('mixins.header')
         @yield('wrapper.outer.top')
         @section('wrapper.notificattions')
-            {{ Notification::showAll() }}
+
         @endsection
+        <div class="messages">
+         {{ Notification::showAll() }}
+        </div>
         <div class="inner-wrapper units-row">
             @yield('wrapper.inner.top')
             @yield('wrapper.inner.content')
