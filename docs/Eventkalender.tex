@@ -1,0 +1,446 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[11pt,a4paper,titlepage,portrait,ngerman]{scrartcl}
+\pdfgentounicode=1
+\pdfcompresslevel=9
+
+% INFO SECTION %
+\def \docTitle{Eventkalender}
+\def \docSubtitle{M151}
+\def \docAuthor{Kim Jeker}
+\def \docDate{\today}
+
+% PACKAGES
+%\usepackage[osf]{mathpazo} 
+\usepackage[default]{raleway}% Font
+\usepackage[pdftex,
+	plainpages=true,
+	breaklinks=true,
+	colorlinks=false,
+	linktoc=all,
+	linkcolor=blue,
+	unicode=true,
+	pdfborder={0 0 0},
+	pdftitle=\docTitle,
+	pdfauthor=\docAuthor 
+]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{hfoldsty}
+\usepackage{thumbpdf}
+\usepackage{amsmath}
+\usepackage[ngerman]{babel}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ngerman}
+\usepackage[a4paper]{geometry}
+\usepackage[
+	letterspace=100,
+	babel=true,
+	tracking=true,
+	kerning=true,
+	protrusion=true,
+	expansion
+]{microtype}
+\usepackage{fixltx2e}
+\usepackage{currfile}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{ellipsis}
+\usepackage{bigfoot}
+\usepackage{lipsum}
+
+
+
+\setkomafont{disposition}{\normalfont}
+\setkomafont{title}{\normalfont\bfseries\scshape\Huge}
+\setkomafont{subtitle}{\normalfont\scshape\bfseries\normalsize}
+\setkomafont{dictumauthor}{\normalfont\bfseries\small}
+\setkomafont{section}{\normalfont\bfseries\scshape\Large}
+\setkomafont{subsection}{\normalfont\bfseries\scshape\large}
+\setkomafont{subsubsection}{\normalfont\bfseries\normalsize}
+\setkomafont{descriptionlabel}{\normalfont\bfseries\small}
+
+
+
+% DOC INFO 
+\title{\docTitle}
+\subtitle{\docSubtitle}
+\author{\large\scshape\docAuthor}
+\date{\normalsize\scshape\docDate}
+
+% HEADER & FOOTER
+\pagestyle{fancy}
+\lhead{\docTitle}
+\chead{\textbf{\leftmark}}
+\rhead{\docSubtitle}
+\lfoot{\currfilename}
+\cfoot{\textbf{\docAuthor}}
+\rfoot{Seite \thepage\ von \pageref*{LastPage} }
+
+
+% Make German ;)
+\renewcommand{\figurename}{Abbildung}
+
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Pflichtenheft}
+\subsection{Funktionsbeschreibung}
+Die Eventkalender-Applikation wird folgende Funktionen haben:
+\begin{list}{\textendash}{\vspace{-5mm}}
+	\item{\subsubsection*{Administartionsbereich}
+		\begin{list}{\textbullet}{\vspace{-3mm}}
+			\item{Neue Veranstaltung erstellen / editieren / löschen}
+			\item{Neue Preisgruppen erstellen / editieren / löschen}
+			\item{Neues Genre erstellen / editieren / löschen}
+		\end{list}
+	}
+	\item{\vspace{-5mm}\subsubsection*{Frontend} 
+		\begin{list}{\textbullet}{\vspace{-3mm}}
+			\item{Anzeige des Programms in chronologischer Reihenfolge}
+			\item{Archiv mit verganenen Veranstaltungen}
+			\item{Filterung nach Genere und Datum}
+		\end{list}
+	}
+\end{list}
+
+\subsection{Darstellung}
+\subsubsection*{Programm}
+Das Proramm wird als vereinfachte Auflistung der Events in chronologischer Rheienfolge dargestellt. Über der Liste wird jeweils ein Datum (z. B. \textbf{25.10.2014}) ausgegeben, darunter die Events, welche an diesem Datum stattfinen. Events mit mehreren Terminen werden an den entspechenden Daten erneut aufgeführt.
+\\
+
+\noindent
+Folgende Informationen soll die Auflistung beinhalten:
+
+\begin{list}{\textendash}{}
+	\item{Event-Name}
+	\item{Zeit}
+	\item{Event-Thumbnail}
+\end{list}
+
+\noindent
+Bei Klick auf einen Eintrag wird das Detail mit allen weiteren Informationen angezeigt.
+\\
+
+\noindent
+Zusätzlich befindet sich auf der Seite noch die Einstellung für den Genre- und Datumsfilter.
+
+\subsubsection*{Archiv}
+Die Darstellung der Events im Archiv ist die Selbe wie die in der Programm-Ansicht. Zusätzlich gibt es noch eine Seiten-Navigation, um zwischen den Seiten zu blättern.
+
+Es weren alle Events im Archiv angezeigt, bei welchen keiner der Veranstaltungstermine in der Zunkunf liegt. 
+
+Events, welche im Archiv sind, können immer noch bearbeitet werden, da man ja im Zweifelsfall auch nachträglich noch Fehler (z. B. Tippfehler) korrigieren möchte.
+
+
+\subsection{Umsetzung}
+\subsubsection*{Eingabevalidierung}
+Die Eingabevalidierung von Formularfeldern wird sowohl Client- als auch Serverseitig realisiert. 
+Auf Client-Seite wird dies, wo möglich, über die \textbf{HTML5-Input-Types} gelöst. Auf Serverseite wird überprüft, ob Pflichtfeler nicht leer sind und ob die ausgewählte Preisgruppe/Genre existiert.
+Da Links theoretisch auch Anker-/E-Mail-Links sein können, werden diese nicht speziell gecheckt.
+
+\subsubsection*{Genre \& Preisgruppe löschen}
+Meine Idee ist, dass es immer mindestens eine Preisgruppe und ein Genre geben muss.
+Der Administartor kann dann einstellen, welche Preisgruppe/welches Genre das «\textbf{Default-Genre}» bzw. die «\textbf{Default-Preisgruppe}» ist. Dies ist beim Anlegen eines neuen Events schon vorausgewählt. 
+\\
+
+\noindent
+Wird nun eine Preisgruppe/ein Genre gelöscht, so wird, falls es Events gibt, welche der Preisgruppe/Genre zugewiesen sind, zuerst eine Meldung ausgegeben, welche den Benutzer warnt, und bei bestätigung, wird die Preisgruppe/Genre gelöscht und bei allen zugewiesenen Events die Default-Preisgruppe/Genre gesetzt.
+\\
+
+\noindent
+Die Default-Preisgruppe/Genre kann nicht gelöscht werden.
+\subsection{Technisches}
+\subsubsection*{Frameworks}
+Folgende Frameworks werden verwendet:
+\begin{list}{\textendash}{}
+\item{Laravel (PHP)}
+\item{MooTools (JS)}
+\item{Kube Web Framework (CSS/JS)}
+\item{Font-Awesome (CSS/Glyphicons)}
+\end{list}
+
+\newpage
+\section{Blackbox-Testplan}
+\subsection{Erstellen einer Veranstaltung}
+\subsubsection*{Name eingeben}
+\vspace{2.5mm}
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt den Namen in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der Event-Name steht im vorgesehenen Feld.}
+	\end{list}
+} \\ 
+\hline 
+\end{tabular}
+
+\subsubsection*{Besetzung angeben}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt die beteiligten Personen in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Die beteiligten Personen steht im vorgesehenen Feld.}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Beschreibung eingeben}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt die Beschreibung in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Die Beschreibung steht im vorgesehenen Feld.}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Vorstellungsdaten erfassen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt einen Vorstellungstermin in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der Termin steht im vorgesehenen Feld. Der User sieht die Möglichkeit, einen weiteren Termin hinzuzufügen.}
+	\end{list}
+}  \\
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt einen weiteren Vorstellungstermin in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der zweite Termin steht im vorgesehenen Feld. Der User sieht die Möglichkeit, einen weiteren Termin hinzuzufügen.}
+	\end{list}
+}  \\
+\hline 
+\multicolumn{2}{|c|}{{\large \textbf{usw}}\textellipsis} \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Vorstellungszeiten erfassen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+		\item{Mindestens ein Vorstellungstermin ist angelegt}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt beim entsprechenden Vorstellungstermin die Veranstaltungszeit in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Die Zeit steht im vorgesehenen Feld.}
+	\end{list}
+}  \\
+\hline 
+\multicolumn{2}{|c|}{{\textbf{Schritt für jeden Termin wiederholen}\textellipsis}} \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Dauer erfassen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt die Dauer in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Die Dauer steht im vorgesehenen Feld.}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Links erfassen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt den Link-Namen und die URL in das vorgesehene Feld ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der Link-Name sowie die URL stehten in den vorgesehenen Felder. Der User sieht die Möglichkeit, einen weiteren Link hinzuzufügen.}
+	\end{list}
+}  \\
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User erfasst einen weiteren Link.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der Link-Name sowie die URL des zweiten Links stehten in den vorgesehenen Felder. Der User sieht die Möglichkeit, einen weiteren Link hinzuzufügen.}
+	\end{list}
+}  \\
+\hline 
+\multicolumn{2}{|c|}{{\large \textbf{usw}}\textellipsis} \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Eventbild auswählen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User wählt ein Bild (welches sich auf seinem Computer befindet) aus.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Ein Eventbild ist ausgewählt.}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+
+\subsubsection*{Bilbeschreibung einfügen}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+		\item{Ein Eventbild ist ausgewählt.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User gibt in das vorgesehene Feld die Bildbeschreibung ein.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Die Bildbeschreibung steht in dem entsprechenden Feld.}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+\newpage
+\subsubsection*{Event speichern}
+\vspace{2.5mm}
+\noindent
+\begin{tabular}{|p{0.3\textwidth}||p{0.63\textwidth}|}
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Vorbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{User ist angemeldet}
+		\item{Berabeiten/Erstellen-Modus ist geöffnet}
+		\item{Mindestens ein Vorstellungstermin ist hinterlegt.}
+		\item{Mindestens eine Vorstellungszeit ist hinterlegt.}
+		\item{Mindestens eine Preisgruppe ist ausgewählt.}
+		\item{Ein Genre ist ausgewählt.}
+		\item{Der Name der Veranstaltung wurde angegeben.}
+		\item{Die Dauer wurde eingegeben.}
+		\item{Eine Beschreibung wurde eingegeben.}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Aktion} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der User klickt auf den Button «Speichern».}
+	\end{list}
+} \\ 
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Nachbedingung} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{Der Event wurde erfasst.}
+	\end{list}
+}  \\
+\hline \rule[-2ex]{0pt}{5.5ex} \textbf{Ausnahme} & {
+	\begin{list}{\textendash}{\vspace{-5mm}}
+		\item{
+			\textbf{Es wurden nicht alle erforderlichen Informationen eingegeben bzw. die eingegebenen Informationen sind nicht valide.}
+			
+			Der User wird darauf hingewiesen, dass der Event so nicht gespeichert werden kann. Er hat nun die möglichkeit, seine Eingaben zu korrigieren.
+		}
+	\end{list}
+}  \\
+\hline 
+\end{tabular}
+
+
+\end{document}

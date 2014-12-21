@@ -1,0 +1,136 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[11pt,a4paper,titlepage,portrait,ngerman,final]{scrartcl}
+\pdfgentounicode=1
+\pdfcompresslevel=9
+
+\RequirePackage[
+	pdftex,
+	plainpages=true,
+	breaklinks=true,
+	colorlinks=false,
+	linktoc=all,
+	linkcolor=false,
+	pageanchor=true,
+	unicode=true,
+	pdfborder={0 0 0},
+	hidelinks=true,
+	pdfpagetransition=Dissolve,
+	pdfdisplaydoctitle=true,
+	final=true
+]{hyperref}
+
+
+% INFO SECTION %
+\def \docTitle{Benutzerhandbuch}
+\def \docSubtitle{M151}
+\def \docAuthor{\href{http://kije.ch}{kije}}
+\def \docDate{\today}
+
+\hypersetup{
+	pdftitle=\docTitle,
+	pdfsubject=\docSubtitle,
+	pdfauthor=\docAuthor,
+}
+
+% PACKAGES
+%\usepackage[osf]{mathpazo} 
+\usepackage[default]{raleway}% Font
+\usepackage[pdftex]{graphicx}
+\usepackage{hfoldsty}
+\usepackage{thumbpdf}
+\usepackage{amsmath}
+\usepackage[ngerman]{babel}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ngerman}
+\usepackage[a4paper]{geometry}
+\usepackage[
+	activate=true,
+	babel=true,
+	kerning=all, 
+	tracking=all,
+	letterspace=90
+]{microtype}
+\usepackage{fixltx2e}
+\usepackage{currfile}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{ellipsis}
+\usepackage{bigfoot}
+\usepackage{lipsum}
+
+\setkomafont{disposition}{\normalfont}
+\setkomafont{title}{\normalfont\bfseries\scshape\Huge}
+\setkomafont{subtitle}{\normalfont\scshape\bfseries\normalsize}
+\setkomafont{dictumauthor}{\normalfont\bfseries\small}
+\setkomafont{section}{\newpage\normalfont\scshape\LARGE}
+\setkomafont{subsection}{\normalfont\bfseries\scshape\large}
+\setkomafont{subsubsection}{\normalfont\bfseries\normalsize}
+\setkomafont{descriptionlabel}{\normalfont\bfseries\small}
+
+
+
+% DOC INFO 
+\title{\docTitle}
+\subtitle{\docSubtitle}
+\author{\large\scshape\docAuthor}
+\date{\normalsize\scshape\docDate}
+
+% HEADER & FOOTER
+\pagestyle{fancy}
+\lhead{\docTitle}
+\chead{\textbf{\leftmark}}
+\rhead{\docSubtitle}
+\lfoot{\currfilename}
+\cfoot{\textbf{\docAuthor}}
+\rfoot{Seite \thepage\ von \pageref*{LastPage} }
+
+
+% Make German ;)
+\renewcommand{\figurename}{Abbildung}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Benutzerhandbuch}
+\subsection{Login}
+Um sich in der Applikation anzumelden, klicken Sie ganz oben rechts auf den «Login»-Button.
+Sie gelangen nun auf die Login-Seite, auf welcher Sie Ihr Benutzername \& Password eingeben können.
+
+Testuser:
+\begin{description}
+\item[Benuzername] root
+\item[Passwort] password
+\end{description}
+
+\subsection{Veranstaltungen erstellen / löschen / editieren}
+Um Veranstaltungen zu verwalten, müssen sie sich zuerst anmelden (siehe oben).
+
+Anschliessend wählen Sie im Menü oben den Eintrag «Events» $\rightarrow$ «Manage Events».
+Hier finden Sie eine übersicht über alle Veranstaltungen. Klicken Sie auf das Symbol mit dem Stift rechts neben der Veranstaltung, um ihn zu bearbeiten. Um ihn zu löschen, klicken Sie auf das Mülleimer-Symbol.
+
+Um eine neue Veranstaltung anzulegen, wählen Sie im Menu oben «Events» $\rightarrow$ «Create Event».
+Sie gelangen nun auf eine Seite mit einem Formular. Füllen Sie hier die gewünschten Felder aus. (Felder mit einem * sind Pflichtfelder).
+
+\subsection{Genre erstellen / löschen / editieren}
+Um Genres zu verwalten, klicken Sie oben auf den Menüpunkt «Genres» $\rightarrow$ «Manage Genres».
+
+Hier finden Sie eine übersicht über alle Genres. Um ein neues Genre zu erstellen, füllen Sie das Feld «Name» oberhalb der Übersichtstabelle aus und klicken anschliessend auf den «Save»-Button gleich daneben.
+
+Das Löschen funktioniert gleich wie bei den Veranstaltungen: Einfach auf das Mülleimer-Symbol rechts neben dem Genre klicken. 
+
+(\textbf{\textsl{ACHTIUNG:} Wird ein Genre gelöscht, so werden alle dem Genre zugewiesenen Veranstaltungen auch gelöscht! Ausserdem muss mindestens ein Genre existieren, bevor Sie eine Veranstaltung erstellen können.})
+
+Um den Namen eines Genres zu verändern, editieren Sie das entsprechende Feld in der Tabelle und klicken anschliessend auf den «Save»-Button daneben.
+
+\subsection{Preisgruppe erstellen / löschen / editieren}
+Um Preisgruppen zu verwalten, klicken Sie oben auf den Menüpunkt «Pricegroups» $\rightarrow$ «Manage Pricegroups».
+
+Es erscheint eine ähnliche Ansicht wie bei Genres. Oberhalb der Tabelle können Sie mittels den Feldern «Name» und «Preis» eine neue Preisgruppe erstellen. Über den Button mit dem Mülleimer kann eine Preisgruppe glöscht werden, und mittels der Felder in der Tabelle können Name und Preis einer einzelnen Preisgruppe angepasst werden.
+\end{document}
